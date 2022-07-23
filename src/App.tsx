@@ -1,12 +1,12 @@
+import "./App.css";
 
-import './App.css';
+import MainPage from "./pages/main";
 
 function App() {
-  console.log("env:",process.env);
   return (
-    <div >
-      Hi
-    </div>
+    <>
+      <MainPage />
+    </>
   );
 }
 
