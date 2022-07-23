@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ServersAsyncActions } from "./serversAsync";
 
-const initialState: any = {
+import { ServersAsyncActions } from "./serversAsync";
+import { IServersState } from "./types";
+
+const initialState: IServersState = {
   list: [],
   loading: false,
 };

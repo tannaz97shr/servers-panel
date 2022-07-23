@@ -1,14 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ServersList } from "../../api/servers";
 
-const List = createAsyncThunk<any, void, any>(
+import { ServersList } from "../../api/servers";
+import { IServerInfo } from "../../models/servers";
+import { ThunkAPIConfig } from "../../models/general";
+
+const List = createAsyncThunk<IServerInfo[], void, ThunkAPIConfig>(
   "servers/list",
   async (_, { rejectWithValue }) => {
     try {
       const serversResult = await ServersList();
       return serversResult.data;
     } catch (error) {
-      return rejectWithValue({ message: "Error" });
+      return rejectWithValue({ message: "Error While tryong to fetch ServersList!" });
     }
   }
 );
