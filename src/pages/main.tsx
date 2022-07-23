@@ -1,18 +1,25 @@
 import { useState, useEffect } from "react";
-import type { AppDispatch, RootState } from "../store";
-import { useSelector, useDispatch } from "react-redux";
 
 import FilterBox from "../components/filterBox/filterBox";
-import {ServersAsyncActions } from "../features/servers/serversAsync";
-import { Store } from "antd/lib/form/interface";
+import { ServersAsyncActions } from "../features/servers/serversAsync";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 
 const MainPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(()=> {
-      dispatch(ServersAsyncActions.List())
-  }, [])
-  const [minimumUptime, setMinimumUptime] = useState<number>();
-  const [maximumUptime, setMaximumUptime] = useState<number>();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(ServersAsyncActions.List());
+  }, []);
+  const { list, totalCount, loading } = useAppSelector(
+    (state) => state.servers
+  );
+  const uptimeArray: number[] = [];
+  list.forEach((server) => uptimeArray.push(server.uptime));
+  const [minimumUptime, setMinimumUptime] = useState<number>(
+    Math.min(...uptimeArray)
+  );
+  const [maximumUptime, setMaximumUptime] = useState<number>(
+    Math.max(...uptimeArray)
+  );
   return (
     <div>
       <FilterBox />
