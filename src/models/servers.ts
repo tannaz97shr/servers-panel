@@ -16,3 +16,8 @@ export interface IServerInfo {
   status: StatusType;
   created: string;
 }
+
+export interface IServersRespose {
+  data: IServerInfo[];
+  totalCount: number;
+}

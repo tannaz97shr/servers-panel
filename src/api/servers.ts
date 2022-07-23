@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 
-import { IServerInfo } from "../models/servers";
+import { IServersRespose } from "../models/servers";
 
 const serversUrl = "functions/servers";
 
-export const ServersList = (): Promise<AxiosResponse<IServerInfo[]>> =>
+export const ServersList = (): Promise<AxiosResponse<IServersRespose>> =>
   axios.get(`${serversUrl}`);

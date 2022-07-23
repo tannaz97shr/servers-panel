@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { ServersList } from "../../api/servers";
-import { IServerInfo } from "../../models/servers";
+import { IServersRespose } from "../../models/servers";
 import { ThunkAPIConfig } from "../../models/general";
 
-const List = createAsyncThunk<IServerInfo[], void, ThunkAPIConfig>(
+const List = createAsyncThunk<IServersRespose, void, ThunkAPIConfig>(
   "servers/list",
   async (_, { rejectWithValue }) => {
     try {

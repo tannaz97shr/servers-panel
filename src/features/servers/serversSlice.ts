@@ -5,6 +5,7 @@ import { IServersState } from "./types";
 
 const initialState: IServersState = {
   list: [],
+  totalCount: 0,
   loading: false,
 };
 
@@ -21,7 +22,8 @@ export const serversSlice = createSlice({
     });
     builder.addCase(ServersAsyncActions.List.fulfilled, (state, action) => {
       state.loading = false;
-      state.list = action.payload;
+      state.list = action.payload.data;
+      state.totalCount = action.payload.totalCount;
     });
   },
 });
