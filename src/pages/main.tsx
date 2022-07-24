@@ -22,10 +22,9 @@ const MainPage = () => {
   );
   let [searchParams, setSearchParams] = useSearchParams();
   const sortBy = searchParams.get("sortBy");
-  console.log("searchParams", sortBy);
+  const order = searchParams.get("order");
   const initialDatasource: IServerInfo<number>[] = [];
   let sortedDatasource: IServerInfo<number>[] = [];
-  const [isSorting, setIsSorting] = useState(sortBy ? true : false);
   if (list)
     list.forEach((server) => {
       const createdDate = new Date(server.created);
@@ -35,41 +34,21 @@ const MainPage = () => {
         created: createdDate.getTime() / 1000,
       });
     });
-    if(isSorting) {
-      if(sortBy === "uptime") {
-        sortedDatasource = initialDatasource.sort((a, b) => a.uptime - b.uptime)
-      } else if(sortBy === "status") {
-        sortedDatasource = initialDatasource.sort((a, b) => ('' + a.status).localeCompare(b.status))
-      } else if(sortBy ===  "created") {
-        sortedDatasource = initialDatasource.sort((a, b) => a.created - b.created)
-      }
-      
-    }
-  // const [dataSource, setDataSource] = useState<IServerInfo<number>[]>(initialDatasource);
-  // const sortedArray = initialDatasource.sort((a, b) => a.created - b.created);
-  // const [minimumUptime, setMinimumUptime] = useState<number>(
-  //   Math.min(...uptimeArray)
-  // );
-  // const [maximumUptime, setMaximumUptime] = useState<number>(
-  //   Math.max(...uptimeArray)
-  // );
-
-  // const sortData = (sortby:SortbyType, order: SortingOrdetType) => {
-  //   let tempArray = dataSource;
-  //   if(order === "accending") {
-  //     setDataSource([...tempArray.sort((a, b) => a[sortby] - b[sortby])])
-  //   } else if
-  // }
-
-  // const sortByUptime = (order: SortingOrdetType) => {
-  //   let tempArray = dataSource;
-  //   if (order === "accending") {
-  //     setDataSource([...tempArray.sort((a, b) => a.uptime - b.uptime)])
-  //   }
-  // }
-  // const sortByStatus = (order: SortingOrdetType) => {};
-  // const sortByCreated = (order: SortingOrdetType) => {};
-
+  if (sortBy === "uptime") {
+    sortedDatasource = initialDatasource.sort((a, b) =>
+      order === "descend" ? b.uptime - a.uptime : a.uptime - b.uptime
+    );
+  } else if (sortBy === "status") {
+    sortedDatasource = initialDatasource.sort((a, b) =>
+      order === "descend"
+        ? ("" + b.status).localeCompare(a.status)
+        : ("" + a.status).localeCompare(b.status)
+    );
+  } else if (sortBy === "created") {
+    sortedDatasource = initialDatasource.sort((a, b) =>
+      order === "descend" ? b.created - a.created : a.created - b.created
+    );
+  }
   const columns: ColumnsType<IServerInfo<number>> = [
     {
       title: "Server Name",
@@ -156,7 +135,7 @@ const MainPage = () => {
       <SortingBox />
       <Table
         columns={columns}
-        dataSource={initialDatasource}
+        dataSource={sortBy ? sortedDatasource : initialDatasource}
         loading={loading}
         // showSorterTooltip={false}
       />

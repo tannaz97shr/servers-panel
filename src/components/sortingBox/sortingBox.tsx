@@ -3,12 +3,7 @@ import { Col, Form, Row, Select } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { SortingBoxContainer } from "./styled";
-
-import { SortbyType, SortingOrderType } from "../../models/servers";
-export interface ISortFormValues {
-  sortBy: SortbyType;
-  order: SortingOrderType;
-}
+import { ISortFormValues } from "./types";
 
 const SortingBoxComponent = () => {
   const { Option } = Select;
@@ -17,10 +12,16 @@ const SortingBoxComponent = () => {
   return (
     <SortingBoxContainer>
       <Form
-        onValuesChange={(changedValue, allValues:ISortFormValues) => {
-          console.log("form values", allValues);
+        onValuesChange={(changedValue, allValues: ISortFormValues) => {
           setOrderEnable(allValues.sortBy ? true : false);
-          if (allValues.sortBy) setSearchParams({ sortBy: allValues.sortBy });
+          if (allValues.sortBy) {
+            setSearchParams({
+              sortBy: allValues.sortBy,
+              order: allValues.order ? allValues.order : "ascend" ,
+            });
+          } else {
+            setSearchParams({});
+          }
         }}
       >
         <Row gutter={16}>
@@ -37,8 +38,8 @@ const SortingBoxComponent = () => {
             <Col span={6}>
               <Form.Item name={"order"} label={"order"}>
                 <Select>
-                  <Option value={"accending"}>Accending</Option>
-                  <Option value={"decending"}>Decending</Option>
+                  <Option value={"ascend"}>ascend</Option>
+                  <Option value={"descend"}>descend</Option>
                 </Select>
               </Form.Item>
             </Col>
