@@ -1,4 +1,3 @@
-
 export type StatusType = "online" | "offline" | "idle";
 
 export interface IStats {
@@ -7,7 +6,7 @@ export interface IStats {
   disk: number;
 }
 
-export interface IServerInfo {
+export interface IServerInfo<CreatedType> {
   id: number;
   serverId: string;
   serverName: string;
@@ -15,22 +14,15 @@ export interface IServerInfo {
   ipv4: string;
   uptime: number;
   status: StatusType;
-  created: string;
+  created: CreatedType;
   key: number;
   stats: IStats;
 }
 
 export interface IServersRespose {
-  data: IServerInfo[];
+  data: IServerInfo<string>[];
   totalCount: number;
 }
 
-export interface IServersColumns {
-  serverName: string;
-  location: string;
-  ipv4: string;
-  uptime: number;
-  status: StatusType;
-  stats: IStats;
-  created: string;
-}
+export type SortbyType = "uptime" | "status" | "created" | "default";
+export type SortingOrdetType = "accending" | "decending";
