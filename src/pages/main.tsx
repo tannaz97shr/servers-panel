@@ -132,7 +132,7 @@ const MainPage = () => {
       key: "created",
       render: (_, { created }) => {
         const date = new Date(created * 1000);
-        return `${date.getFullYear()}-${date.getDate()}-${date.getMonth()}`;
+        return `${date.getFullYear()}-${date.getDate()}-${date.getMonth() + 1}`;
       },
     },
   ];
