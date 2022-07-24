@@ -1,3 +1,4 @@
+
 export type StatusType = "online" | "offline" | "idle";
 
 export interface IStats {
@@ -15,9 +16,21 @@ export interface IServerInfo {
   uptime: number;
   status: StatusType;
   created: string;
+  key: number;
+  stats: IStats;
 }
 
 export interface IServersRespose {
   data: IServerInfo[];
   totalCount: number;
+}
+
+export interface IServersColumns {
+  serverName: string;
+  location: string;
+  ipv4: string;
+  uptime: number;
+  status: StatusType;
+  stats: IStats;
+  created: string;
 }
