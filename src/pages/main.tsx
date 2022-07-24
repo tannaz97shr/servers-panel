@@ -140,7 +140,7 @@ const MainPage = () => {
   return (
     <MainPageContainerStyled>
       <FilterBox />
-      <SortingBox sortByUptime={sortByUptime} />
+      {/* <SortingBox sortByUptime={sortByUptime} /> */}
       <Table columns={columns} dataSource={dataSource} loading={loading} />
     </MainPageContainerStyled>
   );
