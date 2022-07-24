@@ -7,7 +7,7 @@ import { ServersAsyncActions } from "../features/servers/serversAsync";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { IServerInfo, IServersColumns } from "../models/servers";
 import CountryComponent from "../components/countryLocation/country";
-import {MainPageContainerStyled} from "./styled"
+import { MainPageContainerStyled } from "./styled";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -43,9 +43,9 @@ const MainPage = () => {
       title: "Location",
       dataIndex: "location",
       key: "location",
-      render: text => {
+      render: (text) => {
         return <CountryComponent name={text} />;
-      }
+      },
     },
     {
       title: "IPv4",
@@ -53,9 +53,10 @@ const MainPage = () => {
       key: "ipv4",
     },
     {
-      title: "Uptime",
+      title: "Uptime (Days)",
       dataIndex: "uptime",
       key: "uptime",
+      render: (seconds) => Math.round(seconds / 86400),
     },
     {
       title: "Status",
@@ -99,9 +100,6 @@ const MainPage = () => {
           render: (_, item) => item.stats.disk,
         },
       ],
-      // dataIndex: "stats",
-      // key: "stats",
-      // render: (_, { stats, key }) => <StatsComponent {...stats} key={key} />,
     },
     {
       title: "Created",
