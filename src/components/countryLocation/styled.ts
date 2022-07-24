@@ -10,5 +10,5 @@ export const CountryContainer = styled.div`
   background-color: #f0f0f0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding-left: 0.75rem;
 `;

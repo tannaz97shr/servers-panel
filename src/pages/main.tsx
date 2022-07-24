@@ -7,6 +7,7 @@ import { ServersAsyncActions } from "../features/servers/serversAsync";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { IServerInfo, IServersColumns } from "../models/servers";
 import CountryComponent from "../components/countryLocation/country";
+import {MainPageContainerStyled} from "./styled"
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -110,10 +111,10 @@ const MainPage = () => {
   ];
 
   return (
-    <div>
+    <MainPageContainerStyled>
       <FilterBox />
       <Table columns={columns} dataSource={datasource} loading={loading} />
-    </div>
+    </MainPageContainerStyled>
   );
 };
 
