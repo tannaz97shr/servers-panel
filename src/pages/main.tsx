@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Table, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { useSearchParams } from "react-router-dom";
 
 import FilterBox from "../components/filterBox/filterBox";
 import { ServersAsyncActions } from "../features/servers/serversAsync";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { IServerInfo, SortbyType, SortingOrdetType } from "../models/servers";
+import { IServerInfo, SortbyType, SortingOrderType } from "../models/servers";
 import CountryComponent from "../components/countryLocation/country";
 import SortingBox from "../components/sortingBox/sortingBox";
 import { MainPageContainerStyled } from "./styled";
+import { uptime } from "process";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +20,12 @@ const MainPage = () => {
   const { list, totalCount, loading } = useAppSelector(
     (state) => state.servers
   );
+  let [searchParams, setSearchParams] = useSearchParams();
+  const sortBy = searchParams.get("sortBy");
+  console.log("searchParams", sortBy);
   const initialDatasource: IServerInfo<number>[] = [];
+  let sortedDatasource: IServerInfo<number>[] = [];
+  const [isSorting, setIsSorting] = useState(sortBy ? true : false);
   if (list)
     list.forEach((server) => {
       const createdDate = new Date(server.created);
@@ -28,7 +35,17 @@ const MainPage = () => {
         created: createdDate.getTime() / 1000,
       });
     });
-  const [dataSource, setDataSource] = useState<IServerInfo<number>[]>(initialDatasource);
+    if(isSorting) {
+      if(sortBy === "uptime") {
+        sortedDatasource = initialDatasource.sort((a, b) => a.uptime - b.uptime)
+      } else if(sortBy === "status") {
+        sortedDatasource = initialDatasource.sort((a, b) => ('' + a.status).localeCompare(b.status))
+      } else if(sortBy ===  "created") {
+        sortedDatasource = initialDatasource.sort((a, b) => a.created - b.created)
+      }
+      
+    }
+  // const [dataSource, setDataSource] = useState<IServerInfo<number>[]>(initialDatasource);
   // const sortedArray = initialDatasource.sort((a, b) => a.created - b.created);
   // const [minimumUptime, setMinimumUptime] = useState<number>(
   //   Math.min(...uptimeArray)
@@ -41,22 +58,18 @@ const MainPage = () => {
   //   let tempArray = dataSource;
   //   if(order === "accending") {
   //     setDataSource([...tempArray.sort((a, b) => a[sortby] - b[sortby])])
-  //   } else if 
+  //   } else if
   // }
 
-  const sortByUptime = (order: SortingOrdetType) => {
-    let tempArray = dataSource;
-    if (order === "accending") {
-      setDataSource([...tempArray.sort((a, b) => a.uptime - b.uptime)])
-    }
-  }
-  const sortByStatus = (order: SortingOrdetType) => {
+  // const sortByUptime = (order: SortingOrdetType) => {
+  //   let tempArray = dataSource;
+  //   if (order === "accending") {
+  //     setDataSource([...tempArray.sort((a, b) => a.uptime - b.uptime)])
+  //   }
+  // }
+  // const sortByStatus = (order: SortingOrdetType) => {};
+  // const sortByCreated = (order: SortingOrdetType) => {};
 
-  }
-  const sortByCreated= (order: SortingOrdetType) => {
-
-  }
- 
   const columns: ColumnsType<IServerInfo<number>> = [
     {
       title: "Server Name",
@@ -140,8 +153,13 @@ const MainPage = () => {
   return (
     <MainPageContainerStyled>
       <FilterBox />
-      {/* <SortingBox sortByUptime={sortByUptime} /> */}
-      <Table columns={columns} dataSource={dataSource} loading={loading} />
+      <SortingBox />
+      <Table
+        columns={columns}
+        dataSource={initialDatasource}
+        loading={loading}
+        // showSorterTooltip={false}
+      />
     </MainPageContainerStyled>
   );
 };

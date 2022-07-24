@@ -24,5 +24,5 @@ export interface IServersRespose {
   totalCount: number;
 }
 
-export type SortbyType = "uptime" | "status" | "created" | "default";
-export type SortingOrdetType = "accending" | "decending";
+export type SortbyType = "uptime" | "status" | "created" ;
+export type SortingOrderType = "accending" | "decending";

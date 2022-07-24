@@ -1,40 +1,48 @@
-import { Button, Col, Form, Row, Select } from "antd";
+import { useState } from "react";
+import { Col, Form, Row, Select } from "antd";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { SortingBoxComponentProps } from "./types";
 import { SortingBoxContainer } from "./styled";
 
-const SortingBoxComponent = (props: SortingBoxComponentProps) => {
+import { SortbyType, SortingOrderType } from "../../models/servers";
+export interface ISortFormValues {
+  sortBy: SortbyType;
+  order: SortingOrderType;
+}
+
+const SortingBoxComponent = () => {
   const { Option } = Select;
-  const onFinish = (values: any) => {
-    console.log(values);
-  };
+  const [orderEnable, setOrderEnable] = useState(false);
+  let [searchParams, setSearchParams] = useSearchParams();
   return (
     <SortingBoxContainer>
-      <Form onFinish={onFinish}>
+      <Form
+        onValuesChange={(changedValue, allValues:ISortFormValues) => {
+          console.log("form values", allValues);
+          setOrderEnable(allValues.sortBy ? true : false);
+          if (allValues.sortBy) setSearchParams({ sortBy: allValues.sortBy });
+        }}
+      >
         <Row gutter={16}>
           <Col span={6}>
             <Form.Item name={"sortBy"} label={"Sort By"}>
               <Select allowClear>
                 <Option value={"uptime"}>Uptime</Option>
                 <Option value={"created"}>Created</Option>
-                <Option value={"status"}>Dtatus</Option>
-                <Option value={"default"}>Default</Option>
+                <Option value={"status"}>Status</Option>
               </Select>
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item name={"order"} label={"order"}>
-              <Select>
-                <Option value={"accending"}>Accending</Option>
-                <Option value={"decending"}>Decending</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={2}>
-            <Form.Item>
-              <Button type="primary">Submit</Button>
-            </Form.Item>
-          </Col>
+          {orderEnable ? (
+            <Col span={6}>
+              <Form.Item name={"order"} label={"order"}>
+                <Select>
+                  <Option value={"accending"}>Accending</Option>
+                  <Option value={"decending"}>Decending</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          ) : null}
         </Row>
       </Form>
     </SortingBoxContainer>
