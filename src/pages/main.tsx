@@ -10,7 +10,6 @@ import { IServerInfo, SortbyType, SortingOrderType } from "../models/servers";
 import CountryComponent from "../components/countryLocation/country";
 import SortingBox from "../components/sortingBox/sortingBox";
 import { MainPageContainerStyled } from "./styled";
-import { uptime } from "process";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();

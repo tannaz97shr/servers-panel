@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Col, Form, Row, Select } from "antd";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import { SortingBoxContainer } from "./styled";
 import { ISortFormValues } from "./types";
