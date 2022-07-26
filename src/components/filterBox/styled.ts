@@ -12,10 +12,10 @@ export const FilterBoxContainer = styled.div`
 `;
 
 export const FilterBoxHeader = styled.div`
-  background-color: #b5f5ec;
+  background-color: #bae7ff;
   margin-bottom: 1rem;
   font-weight: 700;
   font-size: 1.25rem;
-  color: #00474f;
+  color: #002766;
   padding-left: 1rem;
 `;
