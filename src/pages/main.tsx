@@ -25,7 +25,7 @@ const MainPage = () => {
   const order = searchParams.get("order");
   const serverName = searchParams.get("serverName");
   const status = searchParams.getAll("status");
-  console.log("status", status);
+  const cpuUtilization = searchParams.getAll("cpuUtilization")
   const initialDatasource: IServerInfo<number>[] = [];
   if (list)
     list.forEach((server) => {
@@ -40,9 +40,7 @@ const MainPage = () => {
   if (sortBy && order) {
     sortedDatasource = sortArray(order, sortBy, initialDatasource);
   }
-  sortedDatasource = filterArray(serverName, status, sortedDatasource);
-  // if(serverName) {
-  //   console.log("filtering by",serverName);
+  sortedDatasource = filterArray(serverName, status, cpuUtilization, sortedDatasource);
 
   const columns: ColumnsType<IServerInfo<number>> = [
     {

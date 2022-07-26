@@ -31,8 +31,8 @@ const SortingBoxComponent = () => {
           }
         }}
       >
-        <Row gutter={16}>
-          <Col span={6}>
+        <Row gutter={24}>
+          <Col span={5}>
             <Form.Item name={"sortBy"} label={"Sort By"}>
               <Select allowClear>
                 <Option value={"uptime"}>Uptime</Option>
@@ -42,7 +42,7 @@ const SortingBoxComponent = () => {
             </Form.Item>
           </Col>
           {orderEnable ? (
-            <Col span={6}>
+            <Col span={5}>
               <Form.Item name={"order"} label={"order"}>
                 <Select>
                   <Option value={"ascend"}>ascend</Option>

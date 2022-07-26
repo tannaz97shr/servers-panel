@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, Form, Row, Select, Input, InputNumber, Button } from "antd";
+import { Col, Form, Row, Select, Input, Slider, Button } from "antd";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 import { StatusType } from "../../models/servers";
@@ -22,7 +22,6 @@ const FilterBoxComponent = () => {
         paramsObject[entry[0]] = entry[1]
       }
     });
-    console.log("onfinish", paramsObject)
     setSearchParams(paramsObject);
   };
 
@@ -30,7 +29,7 @@ const FilterBoxComponent = () => {
     <FilterBoxContainer>
       <Form method="get" onFinish={onFinish}>
         <Row gutter={24}>
-          <Col span={6}>
+          <Col span={5}>
             <Form.Item name={"serverName"} label={"Server Name"}>
               <Input />
             </Form.Item>
@@ -44,15 +43,15 @@ const FilterBoxComponent = () => {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={7}>
+          <Col span={10}>
             <Form.Item
               name={"cpuUtilization"}
               label={"CPU Utilization (percent)"}
             >
-              <InputNumber min={1} max={100} />
+              <Slider range defaultValue={[0,100]} />
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={4}>
             <Form.Item>
               <Button type="primary" htmlType="submit">
                 Submit

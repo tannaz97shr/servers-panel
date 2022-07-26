@@ -34,9 +34,9 @@ export const sortArray = (
 export const filterArray = (
   serverName: string | null,
   status: string[],
+  cpuUtilization: string[],
   dataSource: IServerInfo<number>[]
 ): IServerInfo<number>[] => {
-  console.log("folter array");
   let sortedData: IServerInfo<number>[] = dataSource;
   if (serverName) {
     sortedData = sortedData.filter((server) =>
@@ -53,6 +53,15 @@ export const filterArray = (
       });
       return isContaining;
     });
+  }
+  if (cpuUtilization.length) {
+    sortedData = sortedData.filter(
+      (server) =>
+        (server.stats.cpu >
+        Number(
+          cpuUtilization[0]) && (server.stats.cpu < Number(cpuUtilization[1]))
+        )
+    );
   }
   return sortedData;
 };
