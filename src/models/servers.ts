@@ -25,4 +25,4 @@ export interface IServersRespose {
 }
 
 export type SortbyType = "uptime" | "status" | "created" ;
-export type SortingOrderType = "ascend" | "ascend";
+export type SortingOrderType = "ascend" | "descend";

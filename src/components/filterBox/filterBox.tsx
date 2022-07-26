@@ -13,7 +13,6 @@ const FilterBoxComponent = () => {
   let [searchParams, setSearchParams] = useSearchParams();
 
   const onFinish = (values: IFilterFormValues) => {
-
     let currentParams: any = {};
     searchParams.forEach((k, v) => (currentParams[v] = k));
     const newParams = { ...currentParams, ...values }
@@ -23,6 +22,7 @@ const FilterBoxComponent = () => {
         paramsObject[entry[0]] = entry[1]
       }
     });
+    console.log("onfinish", paramsObject)
     setSearchParams(paramsObject);
   };
 
@@ -37,7 +37,7 @@ const FilterBoxComponent = () => {
           </Col>
           <Col span={5}>
             <Form.Item name={"status"} label={"Status"}>
-              <Select allowClear>
+              <Select mode="multiple"  allowClear>
                 <Option value={"online"}>online</Option>
                 <Option value={"offline"}>offline</Option>
                 <Option value={"idle"}>idle</Option>

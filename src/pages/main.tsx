@@ -10,6 +10,7 @@ import { IServerInfo, SortbyType, SortingOrderType } from "../models/servers";
 import CountryComponent from "../components/countryLocation/country";
 import SortingBox from "../components/sortingBox/sortingBox";
 import { MainPageContainerStyled } from "./styled";
+import { sortArray, filterArray } from "../utils/arrayFunctions";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -22,8 +23,10 @@ const MainPage = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   const sortBy = searchParams.get("sortBy");
   const order = searchParams.get("order");
+  const serverName = searchParams.get("serverName");
+  const status = searchParams.getAll("status");
+  console.log("status", status);
   const initialDatasource: IServerInfo<number>[] = [];
-  let sortedDatasource: IServerInfo<number>[] = [];
   if (list)
     list.forEach((server) => {
       const createdDate = new Date(server.created);
@@ -33,21 +36,14 @@ const MainPage = () => {
         created: createdDate.getTime() / 1000,
       });
     });
-  if (sortBy === "uptime") {
-    sortedDatasource = initialDatasource.sort((a, b) =>
-      order === "descend" ? b.uptime - a.uptime : a.uptime - b.uptime
-    );
-  } else if (sortBy === "status") {
-    sortedDatasource = initialDatasource.sort((a, b) =>
-      order === "descend"
-        ? ("" + b.status).localeCompare(a.status)
-        : ("" + a.status).localeCompare(b.status)
-    );
-  } else if (sortBy === "created") {
-    sortedDatasource = initialDatasource.sort((a, b) =>
-      order === "descend" ? b.created - a.created : a.created - b.created
-    );
+  let sortedDatasource: IServerInfo<number>[] = initialDatasource;
+  if (sortBy && order) {
+    sortedDatasource = sortArray(order, sortBy, initialDatasource);
   }
+  sortedDatasource = filterArray(serverName, status, sortedDatasource);
+  // if(serverName) {
+  //   console.log("filtering by",serverName);
+
   const columns: ColumnsType<IServerInfo<number>> = [
     {
       title: "Server Name",
@@ -134,7 +130,7 @@ const MainPage = () => {
       <SortingBox />
       <Table
         columns={columns}
-        dataSource={sortBy ? sortedDatasource : initialDatasource}
+        dataSource={sortedDatasource}
         loading={loading}
         // showSorterTooltip={false}
       />
