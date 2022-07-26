@@ -1,35 +1,35 @@
 import { IServerInfo } from "../models/servers";
 
-export const sortArray = (
-  order: string,
-  sortBy: string,
-  dataSource: IServerInfo<number>[]
-): IServerInfo<number>[] => {
-  let sortedData: IServerInfo<number>[] = [];
-  switch (sortBy) {
-    case "uptime": {
-      sortedData = dataSource.sort((a, b) =>
-        order === "descend" ? b.uptime - a.uptime : a.uptime - b.uptime
-      );
-      break;
-    }
-    case "created": {
-      sortedData = dataSource.sort((a, b) =>
-        order === "descend" ? b.created - a.created : a.created - b.created
-      );
-      break;
-    }
-    case "status": {
-      sortedData = dataSource.sort((a, b) =>
-        order === "descend"
-          ? ("" + b.status).localeCompare(a.status)
-          : ("" + a.status).localeCompare(b.status)
-      );
-      break;
-    }
-  }
-  return sortedData;
-};
+// export const sortArray = (
+//   order: string,
+//   sortBy: string,
+//   dataSource: IServerInfo<number>[]
+// ): IServerInfo<number>[] => {
+//   let sortedData: IServerInfo<number>[] = [];
+//   switch (sortBy) {
+//     case "uptime": {
+//       sortedData = dataSource.sort((a, b) =>
+//         order === "descend" ? b.uptime - a.uptime : a.uptime - b.uptime
+//       );
+//       break;
+//     }
+//     case "created": {
+//       sortedData = dataSource.sort((a, b) =>
+//         order === "descend" ? b.created - a.created : a.created - b.created
+//       );
+//       break;
+//     }
+//     case "status": {
+//       sortedData = dataSource.sort((a, b) =>
+//         order === "descend"
+//           ? ("" + b.status).localeCompare(a.status)
+//           : ("" + a.status).localeCompare(b.status)
+//       );
+//       break;
+//     }
+//   }
+//   return sortedData;
+// };
 
 export const filterArray = (
   serverName: string | null,
@@ -52,17 +52,21 @@ export const filterArray = (
       }
     }
     if (status.length) {
-      status.forEach((st) => {
-        if (server.status !== st) {
-          check = check && false;
+      let result = false;
+      for(let st of status){
+        if (server.status === st) {
+          // check = check && false;
+          result = result || true;
+          break;
         }
-      });
+      };
+      check = check && result;
     }
     if (cpuUtilization.length) {
       if (
         !(
-          server.stats.cpu > cpuUtilization[0] &&
-          server.stats.cpu < cpuUtilization[1]
+          server.stats.cpu >= cpuUtilization[0] &&
+          server.stats.cpu <= cpuUtilization[1]
         )
       ) {
         check = check && false;

@@ -7,11 +7,15 @@ import { IFilterFormValues, FilterBoxProps } from "./types";
 
 const FilterBoxComponent = (props: FilterBoxProps) => {
   const { Option } = Select;
-  const {initialValues} = props;
+  const { initialValues } = props;
   let [searchParams, setSearchParams] = useSearchParams();
-  const [orderEnable, setOrderEnable] = useState(false);
   const onFinish = (values: IFilterFormValues) => {
-    const newParams: any = { ...initialValues, ...values };
+    const newParams: any = values;
+    Object.entries(values).forEach((entry) => {
+      if (!entry[1]) {
+        delete newParams[entry[0]];
+      }
+    });
     setSearchParams(newParams);
   };
 
@@ -42,7 +46,8 @@ const FilterBoxComponent = (props: FilterBoxProps) => {
               <Slider range defaultValue={[0, 100]} />
             </Form.Item>
           </Col>
-        </Row><Row gutter={24}>
+        </Row>
+        <Row gutter={24}>
           <Col span={5}>
             <Form.Item name={"sortBy"} label={"Sort By"}>
               <Select allowClear>
@@ -52,15 +57,15 @@ const FilterBoxComponent = (props: FilterBoxProps) => {
               </Select>
             </Form.Item>
           </Col>
-          
-            <Col span={5}>
-              <Form.Item name={"order"} label={"order"}>
-                <Select>
-                  <Option value={"ascend"}>ascend</Option>
-                  <Option value={"descend"}>descend</Option>
-                </Select>
-              </Form.Item>
-            </Col>
+
+          <Col span={5}>
+            <Form.Item name={"order"} label={"order"}>
+              <Select>
+                <Option value={"ascend"}>ascend</Option>
+                <Option value={"descend"}>descend</Option>
+              </Select>
+            </Form.Item>
+          </Col>
           <Col span={4}>
             <Form.Item>
               <Button type="primary" htmlType="submit">
