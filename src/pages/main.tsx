@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, Tag, message } from "antd";
+import { Table, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useSearchParams } from "react-router-dom";
 
@@ -8,25 +8,29 @@ import { ServersAsyncActions } from "../features/servers/serversAsync";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { IServerInfo, SortbyType, SortingOrderType } from "../models/servers";
 import CountryComponent from "../components/countryLocation/country";
-import SortingBox from "../components/sortingBox/sortingBox";
 import { MainPageContainerStyled } from "./styled";
-import { sortArray, filterArray } from "../utils/arrayFunctions";
+import { filterArray } from "../utils/arrayFunctions";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(ServersAsyncActions.List());
   }, []);
-  const { list, totalCount, loading, message: storeMessage, statusCode } = useAppSelector(
-    (state) => state.servers
-  );
-  if(statusCode) message.error(storeMessage);
+  const {
+    list,
+    totalCount,
+    loading,
+  } = useAppSelector((state) => state.servers);
   let [searchParams, setSearchParams] = useSearchParams();
   const sortBy = searchParams.get("sortBy");
   const order = searchParams.get("order");
   const serverName = searchParams.get("serverName");
   const status = searchParams.getAll("status");
-  const cpuUtilization = searchParams.getAll("cpuUtilization")
+  const cpuUtilizationStr = searchParams.getAll("cpuUtilization");
+  const cpuUtilization = [
+    cpuUtilizationStr[0] ? Number(cpuUtilizationStr[0]) : 0,
+    cpuUtilizationStr[1] ? Number(cpuUtilizationStr[1]) : 100,
+  ];
   const initialDatasource: IServerInfo<number>[] = [];
   if (list)
     list.forEach((server) => {
@@ -37,12 +41,15 @@ const MainPage = () => {
         created: createdDate.getTime() / 1000,
       });
     });
-  let sortedDatasource: IServerInfo<number>[] = initialDatasource;
-  if (sortBy && order) {
-    sortedDatasource = sortArray(order, sortBy, initialDatasource);
-  }
-  sortedDatasource = filterArray(serverName, status, cpuUtilization, sortedDatasource);
-
+  let sortedAndFilteredDatasource: IServerInfo<number>[] = initialDatasource;
+  sortedAndFilteredDatasource = filterArray(
+    serverName,
+    status,
+    cpuUtilization,
+    sortBy,
+    order,
+    sortedAndFilteredDatasource
+  );
   const columns: ColumnsType<IServerInfo<number>> = [
     {
       title: "Server Name",
@@ -125,13 +132,11 @@ const MainPage = () => {
 
   return (
     <MainPageContainerStyled>
-      <FilterBox />
-      <SortingBox />
+      <FilterBox initialValues={{ serverName, status, cpuUtilization, sortBy, order }} />
       <Table
         columns={columns}
-        dataSource={sortedDatasource}
+        dataSource={sortedAndFilteredDatasource}
         loading={loading}
-        // showSorterTooltip={false}
       />
     </MainPageContainerStyled>
   );

@@ -1,7 +1,12 @@
-import { StatusType } from "../../models/servers";
 
 export interface IFilterFormValues {
-  serverName?: string;
-  status?: StatusType;
-  cpuUtilization?: number;
+  serverName?: string | null;
+  status?: string[];
+  cpuUtilization?: number[];
+  sortBy?: string | null;
+  order?: string | null;
+}
+
+export interface FilterBoxProps {
+  initialValues: IFilterFormValues;
 }
