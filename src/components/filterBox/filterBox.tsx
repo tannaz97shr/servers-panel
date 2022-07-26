@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Col, Form, Row, Select, Input, Slider, Button } from "antd";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
-import { StatusType } from "../../models/servers";
-import { FilterBoxContainer } from "./styled";
+import { FilterBoxContainer, FilterBoxHeader } from "./styled";
 import { IFilterFormValues } from "./types";
 
 const FilterBoxComponent = () => {
@@ -27,6 +26,7 @@ const FilterBoxComponent = () => {
 
   return (
     <FilterBoxContainer>
+      <FilterBoxHeader>Filter</FilterBoxHeader>
       <Form method="get" onFinish={onFinish}>
         <Row gutter={24}>
           <Col span={5}>
