@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Col, Form, Row, Select } from "antd";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 import { SortingBoxContainer } from "./styled";
 import { ISortFormValues } from "./types";
@@ -9,18 +9,25 @@ const SortingBoxComponent = () => {
   const { Option } = Select;
   const [orderEnable, setOrderEnable] = useState(false);
   let [searchParams, setSearchParams] = useSearchParams();
+
   return (
     <SortingBoxContainer>
       <Form
         onValuesChange={(changedValue, allValues: ISortFormValues) => {
           setOrderEnable(allValues.sortBy ? true : false);
+          let currentParams: { [k: string]: string } = {};
+          searchParams.forEach((k, v) => (currentParams[v] = k));
+
           if (allValues.sortBy) {
             setSearchParams({
+              ...currentParams,
               sortBy: allValues.sortBy,
-              order: allValues.order ? allValues.order : "ascend" ,
+              order: allValues.order ? allValues.order : "ascend",
             });
           } else {
-            setSearchParams({});
+            delete currentParams.sortBy;
+            delete currentParams.order;
+            setSearchParams(currentParams);
           }
         }}
       >

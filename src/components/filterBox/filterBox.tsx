@@ -13,20 +13,22 @@ const FilterBoxComponent = () => {
   let [searchParams, setSearchParams] = useSearchParams();
 
   const onFinish = (values: IFilterFormValues) => {
-    // navigate(`/${}`);
+
+    let currentParams: any = {};
+    searchParams.forEach((k, v) => (currentParams[v] = k));
+    const newParams = { ...currentParams, ...values }
     let paramsObject:any = new Object;
-    Object.entries(values).map((entry) => {
+    Object.entries(newParams).map((entry) => {
       if (entry[1]) {
         paramsObject[entry[0]] = entry[1]
       }
     });
-    console.log(Object.fromEntries([...searchParams]))
-    // setSearchParams({...searchParams,...paramsObject });
+    setSearchParams(paramsObject);
   };
 
   return (
     <FilterBoxContainer>
-      <Form onFinish={onFinish}>
+      <Form method="get" onFinish={onFinish}>
         <Row gutter={24}>
           <Col span={6}>
             <Form.Item name={"serverName"} label={"Server Name"}>
