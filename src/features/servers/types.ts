@@ -4,4 +4,6 @@ export interface IServersState {
   list: IServerInfo<string>[];
   totalCount: number;
   loading: boolean;
+  message?:string;
+  statusCode?: number;
 }

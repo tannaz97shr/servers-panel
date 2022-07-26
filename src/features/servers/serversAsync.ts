@@ -11,7 +11,7 @@ const List = createAsyncThunk<IServersRespose, void, ThunkAPIConfig>(
       const serversResult = await ServersList();
       return serversResult.data;
     } catch (error) {
-      return rejectWithValue({ message: "Error While tryong to fetch ServersList!" });
+      return rejectWithValue({ message: "Error While trying to fetch ServersList!" });
     }
   }
 );

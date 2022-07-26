@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, Tag } from "antd";
+import { Table, Tag, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useSearchParams } from "react-router-dom";
 
@@ -17,9 +17,10 @@ const MainPage = () => {
   useEffect(() => {
     dispatch(ServersAsyncActions.List());
   }, []);
-  const { list, totalCount, loading } = useAppSelector(
+  const { list, totalCount, loading, message: storeMessage, statusCode } = useAppSelector(
     (state) => state.servers
   );
+  if(statusCode) message.error(storeMessage);
   let [searchParams, setSearchParams] = useSearchParams();
   const sortBy = searchParams.get("sortBy");
   const order = searchParams.get("order");

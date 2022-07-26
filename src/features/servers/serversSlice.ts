@@ -24,6 +24,12 @@ export const serversSlice = createSlice({
       state.loading = false;
       state.list = action.payload.data;
       state.totalCount = action.payload.totalCount;
+      if (action.payload.message) {
+        state.message = action.payload.message;
+      }
+      if (action.payload.statusCode) {
+        state.statusCode = action.payload.statusCode;
+      }
     });
   },
 });
