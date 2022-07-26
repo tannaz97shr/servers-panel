@@ -22,7 +22,7 @@ const FilterBoxComponent = (props: FilterBoxProps) => {
   return (
     <FilterBoxContainer>
       <FilterBoxHeader>Filter</FilterBoxHeader>
-      <Form method="get" onFinish={onFinish} initialValues={initialValues}>
+      <Form onFinish={onFinish} initialValues={initialValues}>
         <Row gutter={24}>
           <Col span={5}>
             <Form.Item name={"serverName"} label={"Server Name"}>
